@@ -1,0 +1,69 @@
+defaults: &defaults
+  docker:
+    - image: circleci/golang:1.11
+  environment:
+    GO111MODULE: "on"
+  working_directory: /go/src/github.com/ernoaapa/kubectl-warp
+
+version: 2
+jobs:
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+
+      # Temporary hack to install packages and not fail to checksum mismatch error
+      # https://github.com/golang/go/issues/27925#issuecomment-440608747
+      - run: rm go.sum
+      
+      - run: "! go fmt -l pkg cmd 2>&1 | read"
+      - run: go vet ./...
+      - run: go test ./...
+
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+
+      # Temporary hack to install packages and not fail to checksum mismatch error
+      # https://github.com/golang/go/issues/27925#issuecomment-440608747
+      - run: rm go.sum
+
+      - run: go build .
+
+      - run: wget -qO- https://github.com/goreleaser/goreleaser/releases/download/v0.95.0/goreleaser_Linux_x86_64.tar.gz | tar xvz
+      - run: ./goreleaser --snapshot
+
+  publish:
+    <<: *defaults
+    steps:
+      - checkout
+
+      # Temporary hack to install packages and not fail to checksum mismatch error
+      # https://github.com/golang/go/issues/27925#issuecomment-440608747
+      - run: rm go.sum
+
+      - run: go build .
+
+      - run: wget -qO- https://github.com/goreleaser/goreleaser/releases/download/v0.95.0/goreleaser_Linux_x86_64.tar.gz | tar xvz
+      - run: ./goreleaser
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test
+              
+      - build:
+          requires:
+            - test
+
+      - publish:
+          requires:
+            - build
+          
+          # Don't run when branches updates, only when tags get created
+          filters:
+            tags:
+              only:
+                - /v.*/
