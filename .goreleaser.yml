@@ -1,0 +1,27 @@
+builds:
+  - binary: kubectl-warp
+    env:
+      - CGO_ENABLED=0
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+brew:
+  name: warp
+  github:
+    owner: ernoaapa
+    name: homebrew-kubectl-plugins
+  homepage: "https://github.com/ernoaapa/kubectl-warp"
+  description: "Kubectl plugin to sync files and execute arbitary command in Kubernetes"
+  test: |
+    system "#{bin}/kubectl-warp --version"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
