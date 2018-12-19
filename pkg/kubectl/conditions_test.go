@@ -9,20 +9,24 @@ import (
 
 func TestIsInitContainersReady(t *testing.T) {
 	pod := &apiv1.Pod{
+		Spec: apiv1.PodSpec{
+			InitContainers: []apiv1.Container{
+				{
+					Name:  "sync-init",
+					Image: "ernoaapa/sshd-rsync",
+				},
+			},
+		},
 		Status: apiv1.PodStatus{
 			Phase: "Pending",
 			Conditions: []apiv1.PodCondition{
 				{
 					Type:   apiv1.PodScheduled,
-					Status: apiv1.ConditionFalse,
+					Status: apiv1.ConditionTrue,
 				},
 				{
 					Type:   apiv1.PodReady,
 					Status: apiv1.ConditionFalse,
-				},
-				{
-					Type:   apiv1.PodScheduled,
-					Status: apiv1.ConditionTrue,
 				},
 			},
 			InitContainerStatuses: []apiv1.ContainerStatus{
