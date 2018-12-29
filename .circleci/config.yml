@@ -23,8 +23,8 @@ jobs:
 
       - run: go build .
 
-      - run: wget -qO- https://github.com/goreleaser/goreleaser/releases/download/v0.95.0/goreleaser_Linux_x86_64.tar.gz | tar xvz
-      - run: ./goreleaser --snapshot
+      - run: wget -qO- https://github.com/goreleaser/goreleaser/releases/download/v0.95.0/goreleaser_Linux_x86_64.tar.gz | tar xvz -C /usr/local/bin
+      - run: goreleaser --snapshot
 
   publish:
     <<: *defaults
@@ -33,8 +33,8 @@ jobs:
 
       - run: go build .
 
-      - run: wget -qO- https://github.com/goreleaser/goreleaser/releases/download/v0.95.0/goreleaser_Linux_x86_64.tar.gz | tar xvz
-      - run: ./goreleaser
+      - run: wget -qO- https://github.com/goreleaser/goreleaser/releases/download/v0.95.0/goreleaser_Linux_x86_64.tar.gz | tar xvz -C /usr/local/bin
+      - run: goreleaser
 
 workflows:
   version: 2
