@@ -1,0 +1,30 @@
+{
+  "name": "kubectl-warp-example",
+  "version": "1.0.0",
+  "description": "Example NodeJS project for demostrating kubectl warp command",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ernoaapa/kubectl-warp.git"
+  },
+  "keywords": [
+    "kubernetes",
+    "kubectl",
+    "warp",
+    "rsync"
+  ],
+  "author": "Erno Aapa <erno.aapa@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ernoaapa/kubectl-warp/issues"
+  },
+  "homepage": "https://github.com/ernoaapa/kubectl-warp#readme",
+  "dependencies": {
+    "nodemon": "^1.18.9"
+  }
+}

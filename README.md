@@ -5,11 +5,11 @@ kubectl (Kubernetes CLI) plugin to syncronize local files to _Pod_ and executing
 This can be used for example to build and run your local project in Kubernetes while using your prefed editor locally.
 
 ## Install
-## MacOS with Brew
+### MacOS with Brew
 ```shell
 brew install ernoaapa/kubectl-plugins/warp
 ```
-## Linux / MacOS without Brew
+### Linux / MacOS without Brew
 1. Download binary from [releases](https://github.com/ernoaapa/kubectl-warp/releases)
 2. Add it to your `PATH`
 
@@ -18,6 +18,9 @@ When the plugin binary is found from `PATH` you can just execute it through `kub
 ```shell
 kubectl warp --help
 ```
+
+### Examples
+There's some examples with different languages in [examples directory](examples/)
 
 ## Development
 ### Prerequisites
