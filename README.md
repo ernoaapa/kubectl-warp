@@ -41,6 +41,13 @@ When the initial sync is done, the actual container start with `sshd-rsync` as a
 
 ## Install
 
+### With Krew (Kubernetes plugin manager)
+
+```shell
+krew update
+krew install warp
+```
+
 ### MacOS with Brew
 ```shell
 brew install rsync ernoaapa/kubectl-plugins/warp
