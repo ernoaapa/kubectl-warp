@@ -57,3 +57,37 @@ workflows:
                 - /v.*/
             branches:
               ignore: /.*/
+
+  build_and_publish:
+    jobs:
+      - test:
+          # Don't run when branches updates, only when tags get created
+          filters:
+            tags:
+              only:
+                - /v.*/
+            branches:
+              ignore: /.*/
+
+      - build:
+          requires:
+            - test
+          # Don't run when branches updates, only when tags get created
+          filters:
+            tags:
+              only:
+                - /v.*/
+            branches:
+              ignore: /.*/
+
+      - publish:
+          requires:
+            - build
+          
+          # Don't run when branches updates, only when tags get created
+          filters:
+            tags:
+              only:
+                - /v.*/
+            branches:
+              ignore: /.*/
