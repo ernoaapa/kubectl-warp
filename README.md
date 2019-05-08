@@ -43,6 +43,8 @@ When the initial sync is done, the actual container start with `sshd-rsync` as a
 
 ### With Krew (Kubernetes plugin manager)
 
+Install [Krew](https://github.com/kubernetes-sigs/krew/), then run the following commands:
+
 ```shell
 krew update
 krew install warp
