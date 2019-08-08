@@ -60,7 +60,7 @@ func (c *Client) findPodByName(namespace, name string) (*apiv1.Pod, error) {
 	return &apiv1.Pod{}, ErrWithMessagef(ErrNotFound, "Pod with name %s not found", name)
 }
 
-func (c *Client) CreatePod(namespace, name, image string, cmd []string, workDir string, tty, stdin bool, publicKey []byte) (*apiv1.Pod, error) {
+func (c *Client) CreatePod(namespace, name, image string, cmd []string, workDir string, tty, stdin bool, publicKey []byte, scvAccName string, nodeSelectors map[string]string) (*apiv1.Pod, error) {
 	if err := c.createSSHSecret(namespace, name, publicKey); err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (c *Client) CreatePod(namespace, name, image string, cmd []string, workDir 
 		return nil, err
 	}
 
-	return client.Create(createPodManifest(name, image, cmd, workDir, tty, stdin))
+	return client.Create(createPodManifest(name, image, cmd, workDir, tty, stdin, scvAccName, nodeSelectors))
 }
 
 // WaitForPod watches the given pod until the exitCondition is true
