@@ -38,6 +38,8 @@ type runOptions struct {
 	RsyncArgs string
 	Includes  []string
 	Excludes  []string
+	ServiceAccountName string
+	NodeSelector map[string]string
 }
 
 var configFlags = genericclioptions.NewConfigFlags()
@@ -102,7 +104,7 @@ along with the synchronized files.`,
 		c := kubectl.NewClient(config)
 
 		fmt.Fprintln(stderr, "Create the Pod")
-		_, err = c.CreatePod(ns, name, opt.Image, cmd, workDir, opt.TTY, opt.Stdin, publicKey)
+		_, err = c.CreatePod(ns, name, opt.Image, cmd, workDir, opt.TTY, opt.Stdin, publicKey, opt.ServiceAccountName, opt.NodeSelector)
 		if err != nil {
 			return err
 		}
@@ -188,6 +190,8 @@ func init() {
 	rootCmd.Flags().BoolVarP(&opt.TTY, "tty", "t", opt.TTY, "Stdin is a TTY")
 	rootCmd.Flags().StringSliceVar(&opt.Includes, "include", []string{}, "Include only specific paths from current directory for syncing")
 	rootCmd.Flags().StringSliceVar(&opt.Excludes, "exclude", []string{}, "Exclude only specific paths from current directory for syncing")
+	rootCmd.Flags().StringVar(&opt.ServiceAccountName, "service-account-name", opt.ServiceAccountName, "The service account name that you want the pod to use")
+	rootCmd.Flags().StringToStringVar(&opt.NodeSelector, "node-selector", map[string]string{}, "The kay-value pairs used for the nodeSelector")
 }
 
 // Execute run the root command

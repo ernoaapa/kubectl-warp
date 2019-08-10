@@ -19,7 +19,7 @@ func createSecretManifest(name string, publicKey []byte) *apiv1.Secret {
 	}
 }
 
-func createPodManifest(name, image string, cmd []string, workDir string, tty, stdin bool) *apiv1.Pod {
+func createPodManifest(name, image string, cmd []string, workDir string, tty, stdin bool, svcAccName string, nodeSelectors map[string]string) *apiv1.Pod {
 	syncContainer := apiv1.Container{
 		Name:  "sync",
 		Image: "ernoaapa/sshd-rsync",
@@ -65,6 +65,7 @@ func createPodManifest(name, image string, cmd []string, workDir string, tty, st
 		Stdin:      stdin,
 		StdinOnce:  stdin,
 		WorkingDir: workDir,
+
 		VolumeMounts: []apiv1.VolumeMount{
 			{
 				Name:      "workdir",
@@ -76,9 +77,12 @@ func createPodManifest(name, image string, cmd []string, workDir string, tty, st
 	return &apiv1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: name,
+
 		},
 		Spec: apiv1.PodSpec{
+			ServiceAccountName: svcAccName,
 			RestartPolicy: apiv1.RestartPolicyNever,
+			NodeSelector: nodeSelectors,
 			InitContainers: []apiv1.Container{
 				{
 					Name:  "sync-init",
